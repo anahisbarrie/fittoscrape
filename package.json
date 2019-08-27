@@ -1,0 +1,26 @@
+{
+  "name": "fittoscrape",
+  "version": "1.0.0",
+  "description": "create a web app that lets users scrap and  view and leave comments on the latest news",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anahisbarrie/fittoscrape.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anahisbarrie/fittoscrape/issues"
+  },
+  "homepage": "https://github.com/anahisbarrie/fittoscrape#readme",
+  "dependencies": {
+    "axios": "^0.19.0",
+    "cherio": "^1.0.0-rc.2",
+    "express": "^4.17.1",
+    "express-handlebars": "^3.1.0",
+    "mongoose": "^5.6.11"
+  }
+}
