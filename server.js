@@ -22,39 +22,63 @@ var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines
 mongoose.connect(MONGODB_URI);
 
 // Get route for scraping the website 
-app.get("/scrape", function (req, res) {
+app.get("/", function (req, res) {
     //grabbing the body of the html with axios 
-    axios.get("https://www.nytimes.com/es/").then(function (response) {
-        //to download data from NYT load cheerios and save it into a variablew
-        var $ = cheerio.load(response.data);
-        console.log("this is what we get" + response.data);
-        // to grab every h2 with an article tag:
+        var scrape = function(){
+            console.log("SCRAPE LIVES")
+            axios.get("https://www.nytimes.com/").then(function (response) {
+                console.log("I AM IN SCRAPE")
+                //to download data from NYT load cheerios and save it into a variablew
+                var $ = cheerio.load(response.data);
+                // to grab every h2 with an article tag:
 
-        $("article h2").each(function (i, element) {
-            //add an empty array to save the data  that user will scrape
-            var result = {};
+                $(".assetWrapper").each(function (i, element) {
+                //add an empty array to save the data  that user will scrape
+                var resultList = [];
 
-            //save the results of th eobject and every property 
-            result.title = $(this)
-                .children("a")
-                .text();
-            result.link = $(this)
-                .children("a")
-                .attr("href");
+                //save the results of th eobject and every property 
+                var title = $(this)
+                    .find("h2")
+                    .text()
+                    .trim();
 
-            //Create a new article using result from scrapping
-            db.Question.create(result)
-                .then(function (dbArticle) {
-                    console.log(dbArticle);
-                })
-                .catch(function (err) {
-                    console.log(err)
-                });
+                var link = $(this)
+                    .find("a")
+                    .attr("href");
 
-        });
-        //send message to client
-        res.send("Scrape Complete");
-    });
+                var sum = $(this)
+                    .find("p")
+                    .text()
+                    .trim();
+
+                if (title && sum && link) {
+                    var titleNeat = head.replace(/(\r\n|\n|\r|\t|\s+)/gm, " ").trim();
+                    var sumNeat = sum.replace(/(\r\n|\n|\r|\t|\s+)/gm, " ").trim();
+
+                    var results = {
+                        title: titleNeat,
+                        link: "https://www.nytimes.com" + link,
+                        summary: sumNeat
+                    };
+                    console.log("RESULTS:  ", results);
+                    resultList.push(results);
+                }
+            });
+            console.log(resultList);
+            return resultList;
+        })
+    }   
+    console.log("RESULTS:  ", results)
+    return scrape()
+        .then(function(results){
+            return db.Question.create(results)
+        })
+        .then(function (dbArticle) {
+            console.log(dbArticle);
+        })
+        .catch(function (err) {
+            console.log(err)
+        });  
 });
 
 // Route for getting articles from the db 
