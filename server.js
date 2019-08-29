@@ -27,7 +27,7 @@ app.get("/scrape", function (req, res) {
     axios.get("https://www.nytimes.com/es/").then(function (response) {
         //to download data from NYT load cheerios and save it into a variablew
         var $ = cheerio.load(response.data);
-
+        console.log("this is what we get" + response.data);
         // to grab every h2 with an article tag:
 
         $("article h2").each(function (i, element) {
@@ -35,7 +35,7 @@ app.get("/scrape", function (req, res) {
             var result = {};
 
             //save the results of th eobject and every property 
-            result.tittle = $(this)
+            result.title = $(this)
                 .children("a")
                 .text();
             result.link = $(this)
@@ -43,7 +43,7 @@ app.get("/scrape", function (req, res) {
                 .attr("href");
 
             //Create a new article using result from scrapping
-            db.Article.create(result)
+            db.Question.create(result)
                 .then(function (dbArticle) {
                     console.log(dbArticle);
                 })
@@ -58,9 +58,9 @@ app.get("/scrape", function (req, res) {
 });
 
 // Route for getting articles from the db 
-app.get("/article",function(req,res){
+app.get("/questions",function(req,res){
     // To grab every article
-    db.Article.find({})
+    db.Question.find({})
     .then(function(dbArticle){
         res.json(dbArticle);
     })
@@ -71,7 +71,7 @@ app.get("/article",function(req,res){
 
 //Route to grabb a specific article by id
 app.get("/articles/:id", function(req,res){
-    db.Article.findOne({_id: req.params.id})
+    db.Question.findOne({_id: req.params.id})
     .populate("note")
     .then(function(dbArticle){
         res.json(dbArticle);
