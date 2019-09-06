@@ -2,6 +2,8 @@
 Fit to Scrape is an application that lets users scrape news articles from https://www.buzzfeednews.com/ 
 1. Users can then view the tittle or the article and leave comments on saved articles. This app uses Cheerio to scrape news from NPR and stores them in MongoDB using Mongoose
 
+Check a demo on the following link: Please check it out at https://fitoscrape.herokuapp.com/
+
 
 Technologies used:
 
@@ -29,3 +31,4 @@ To run All the News That's Fit to Scrape locally, Please Ensure that MongoDB is 
 
 
 
+Please check it out at https://fitoscrape.herokuapp.com/
